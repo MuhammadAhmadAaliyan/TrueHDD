@@ -59,6 +59,14 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assests/fonts/Inter_18pt-Bold.ttf
+        - asset: assests/fonts/Inter_18pt-Medium.ttf
+        - asset: assests/fonts/Inter_18pt-Regular.ttf
+        - asset: assests/fonts/Inter_18pt-SemiBold.ttf
+        - asset: assests/images/App Logo.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -3,30 +3,24 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: const Color(0xFFFFFFFF),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFFE0E0E0),
-    ),
+    scaffoldBackgroundColor: const Color(0xFFFFFFFF), // Main window bg
     textTheme: const TextTheme(
       bodyMedium: TextStyle(color: Colors.black),
     ),
     popupMenuTheme: const PopupMenuThemeData(
-      color: Color(0xFFE0E0E0),
-      textStyle: TextStyle(color: Colors.black),
+      color: Color.fromARGB(255, 206, 206, 206), // Dropdown bg (40% opacity)
+      textStyle: TextStyle(color: Colors.black,),
     ),
   );
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: const Color(0xFF1E1E1E),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF2C2C2C),
-    ),
+    scaffoldBackgroundColor: const Color(0xFF626262), // Main window bg
     textTheme: const TextTheme(
       bodyMedium: TextStyle(color: Colors.white),
     ),
     popupMenuTheme: const PopupMenuThemeData(
-      color: Color(0xFF2C2C2C),
+      color: Color(0xFF3A3939), // Dropdown bg
       textStyle: TextStyle(color: Colors.white),
     ),
   );
@@ -35,7 +29,7 @@ class AppTheme {
   static Color menuBarColor(Brightness brightness) {
     return brightness == Brightness.dark
         ? const Color(0xFF3A3939)
-        : const Color(0xFFE0E0E0);
+        : const Color.fromARGB(255, 206, 206, 206);
   }
 
   /// Menu text color
