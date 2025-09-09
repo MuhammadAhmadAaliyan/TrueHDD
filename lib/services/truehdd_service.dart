@@ -5,24 +5,50 @@ import 'dart:io';
 import 'package:async/async.dart';
 
 class TrueHddService {
-  /// Runs `truehdd.exe --help` and returns a stream of log lines.
-  static Future<Stream<String>> runHelp() async {
+  /// Runs a `truehdd` command with given subcommand, options and input.
+  static Future<Stream<String>> _runCommand(
+    String subcommand, {
+    required String inputPath,
+    List<String>? options,
+    bool forceProgress = false,
+  }) async {
+    // Build command arguments
+    final args = <String>[subcommand];
+
+    if (options != null && options.isNotEmpty) {
+      args.addAll(options);
+    }
+
+    // For decode, always add --progress
+    if (forceProgress) {
+      if (!args.contains("--progress")) {
+        args.add("--progress");
+      }
+    }
+
+    args.add(inputPath);
+
     final process = await Process.start(
       "truehdd.exe",
-      ["--help"],
+      args,
       workingDirectory: Directory.current.path,
     );
 
     // Merge stdout and stderr into one stream of lines
-    final outputStream = StreamGroup.merge([
-      process.stdout
-          .transform(utf8.decoder)
-          .transform(const LineSplitter()),
-      process.stderr
-          .transform(utf8.decoder)
-          .transform(const LineSplitter())
-          .map((line) => "ERROR: $line"),
-    ]);
+    // Merge stdout and stderr into one stream of lines
+    final stdoutStream = process.stdout
+        .transform(utf8.decoder)
+        .transform(const LineSplitter());
+
+    final stderrStream = process.stderr
+        .transform(utf8.decoder)
+        .expand((chunk) {
+          // Split both on \n and \r so we capture progress updates
+          return chunk.split(RegExp(r'[\r\n]+'));
+        })
+        .where((line) => line.trim().isNotEmpty);
+
+    final outputStream = StreamGroup.merge([stdoutStream, stderrStream]);
 
     // Append exit code when process completes
     return outputStream.transform(
@@ -33,6 +59,27 @@ class TrueHddService {
           sink.close();
         },
       ),
+    );
+  }
+
+  /// Runs `truehdd info [OPTIONS] <INPUT>`
+  static Future<Stream<String>> runInfo({
+    required String inputPath,
+    List<String>? options,
+  }) {
+    return _runCommand("info", inputPath: inputPath, options: options);
+  }
+
+  /// Runs `truehdd decode [OPTIONS] <INPUT>` (always with --progress)
+  static Future<Stream<String>> runDecode({
+    required String inputPath,
+    List<String>? options,
+  }) {
+    return _runCommand(
+      "decode",
+      inputPath: inputPath,
+      options: options,
+      forceProgress: true,
     );
   }
 }

@@ -62,4 +62,58 @@ class AppTheme {
         ? const Color(0xFF3A3939)
         : const Color(0xFFCECECE);
   }
+
+  ///Switch Track Color
+  static switchTrackColor(Brightness brightness) {
+    return brightness == Brightness.dark
+        ? Color(0xFFc17cf2)
+        : Color(0xFF9929EA);
+  }
+
+  ///Switch Thumb Color
+  static switchThumbColor(Brightness brightness) {
+    return brightness == Brightness.dark
+        ? Color(0xFF3c0960)
+        : Color(0xFFFFFFFF);
+  }
+
+  /// Gradient for Cancel Button
+  static LinearGradient cancelButtonGradient(Brightness brightness) {
+    return brightness == Brightness.dark
+        ? const LinearGradient(
+            colors: [Color(0xFFFF2727), Color(0xFF8000FF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+        : const LinearGradient(
+            colors: [Color(0xFFFF2727), Color(0xFFFF2727)], // Solid Red
+          );
+  }
+
+  /// Gradient for Decode Button
+  static LinearGradient buttonGradient(Brightness brightness) {
+    return brightness == Brightness.dark
+        ? const LinearGradient(
+            colors: [Color(0xFF9929EA), Color(0xFFE754FF)], // Purple → Pink
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          )
+        : const LinearGradient(
+            colors: [Color(0xFF9929EA), Color(0xFF9929EA)], // Solid Purple
+          );
+  }
+
+/// Gradient Border for Info Button
+static LinearGradient infoButtonBorderGradient(Brightness brightness) {
+  return brightness == Brightness.dark
+      ? const LinearGradient(
+          colors: [Color(0xFF9929EA), Color(0xFFE754FF)], // Purple → Pink
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        )
+      : const LinearGradient(
+          colors: [Color(0xFF9929EA), Color(0xFF9929EA)], // Solid purple border
+        );
+}
+
 }
